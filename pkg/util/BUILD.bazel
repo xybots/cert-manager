@@ -1,0 +1,46 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "context.go",
+        "useragent.go",
+        "util.go",
+        "version.go",
+    ],
+    importpath = "github.com/jetstack/cert-manager/pkg/util",
+    visibility = ["//visibility:public"],
+    deps = ["//pkg/apis/certmanager/v1alpha2:go_default_library"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "util_test.go",
+        "version_test.go",
+    ],
+    embed = [":go_default_library"],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//pkg/util/cmd:all-srcs",
+        "//pkg/util/coverage:all-srcs",
+        "//pkg/util/errors:all-srcs",
+        "//pkg/util/feature:all-srcs",
+        "//pkg/util/kube:all-srcs",
+        "//pkg/util/pki:all-srcs",
+        "//pkg/util/profiling:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)
